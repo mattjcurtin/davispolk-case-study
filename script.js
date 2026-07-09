@@ -35,6 +35,22 @@
     stuckObserver.observe(sentinel);
   }
 
+  var jumpToggle = document.getElementById("jump-nav-toggle");
+  var jumpList = document.getElementById("jump-nav-list");
+  if (jumpNav && jumpToggle && jumpList) {
+    jumpToggle.addEventListener("click", function () {
+      var isOpen = jumpNav.classList.toggle("is-open");
+      jumpToggle.setAttribute("aria-expanded", String(isOpen));
+    });
+
+    jumpList.addEventListener("click", function (event) {
+      if (event.target.tagName === "A") {
+        jumpNav.classList.remove("is-open");
+        jumpToggle.setAttribute("aria-expanded", "false");
+      }
+    });
+  }
+
   var jumpLinks = Array.prototype.slice.call(document.querySelectorAll(".jump-nav__link"));
   if (jumpLinks.length && "IntersectionObserver" in window) {
     var jumpSections = jumpLinks

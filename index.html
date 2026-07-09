@@ -41,7 +41,7 @@
       <div class="site-header__inner container">
         <div class="site-header__brand">
           <button type="button" class="hamburger" id="menu-toggle" aria-expanded="false" aria-controls="mobile-nav" aria-label="Open menu">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+            <img src="assets/menu-hamburger.svg" alt="" width="17" height="14" aria-hidden="true" />
           </button>
           <a class="site-header__logo" href="#" aria-label="Davis Polk home">
             <img src="assets/davis-polk-logo-white.svg" alt="Davis Polk" width="136" height="23" />
@@ -62,9 +62,9 @@
             <a class="nav-link" href="#">Alumni</a>
           </nav>
         </div>
-        <button type="button" class="site-header__search" aria-label="Search">
+        <span class="site-header__search" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
-        </button>
+        </span>
       </div>
 
       <nav id="mobile-nav" class="mobile-nav" aria-label="Primary mobile">
@@ -80,9 +80,15 @@
 
     <section class="hero">
       <div class="hero-inner container">
-        <p class="breadcrumb">
-          Matters<span>&gt;</span>Pharmaceutical &amp; Life Sciences<span>&gt;</span>Hostile Defense
-        </p>
+        <div class="breadcrumb">
+          <p class="breadcrumb__trail">
+            Matters<span>&gt;</span>Pharmaceutical &amp; Life Sciences<span>&gt;</span>Hostile Defense
+          </p>
+          <a href="#" class="breadcrumb__back">
+            <svg class="breadcrumb__back-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
+            Hostile Defense
+          </a>
+        </div>
 
         <div class="hero-grid">
           <div class="hero-main">
@@ -136,12 +142,20 @@
          ============================================================ -->
     <div class="jump-nav-sentinel"></div>
     <nav class="jump-nav" aria-label="Jump to section">
-      <ul class="container">
-        <li><a href="#situation" class="jump-nav__link">The situation</a></li>
-        <li><a href="#approach" class="jump-nav__link">Our approach</a></li>
-        <li><a href="#outcome" class="jump-nav__link">The outcome</a></li>
-        <li><a href="#related" class="jump-nav__link">Related resources</a></li>
-      </ul>
+      <div class="container">
+        <button type="button" class="jump-nav__toggle" id="jump-nav-toggle" aria-expanded="false" aria-controls="jump-nav-list">
+          Jump to section
+          <span class="jump-nav__toggle-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+          </span>
+        </button>
+        <ul class="jump-nav__list" id="jump-nav-list">
+          <li><a href="#situation" class="jump-nav__link">The situation</a></li>
+          <li><a href="#approach" class="jump-nav__link">Our approach</a></li>
+          <li><a href="#outcome" class="jump-nav__link">The outcome</a></li>
+          <li><a href="#related" class="jump-nav__link">Related resources</a></li>
+        </ul>
+      </div>
     </nav>
 
     <section class="stat-strip">
