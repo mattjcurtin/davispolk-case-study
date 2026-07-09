@@ -27,7 +27,7 @@
   --gray: #D6D5DB;
   --dark-gray: #7A797F;
 
-  --font-sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-sans: "Helvetica Neue Web", "Helvetica Neue", Helvetica, Arial, sans-serif;
 
   --container-max: 1500px;
   --gutter: 40px;
@@ -204,7 +204,7 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
   margin: 0 0 28px;
 }
 
-/* Hero splits into a main narrative column and a Matter Tags
+/* Hero splits into a main narrative column and an At a glance
    sidebar; sidebar collapses below the main column on narrow
    viewports. */
 .hero-grid {
@@ -383,20 +383,27 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 }
 .stat-label { font-size: clamp(16px, 1.7vw, 24px); color: var(--black); }
 
-/* ---------- Main content sections ---------- */
-.content-wrap { padding-block: 72px; display: flex; flex-direction: column; gap: 64px; }
+/* ---------- Main content sections ----------
+   Each stage of the matter narrative is its own full-bleed
+   section with a distinct background; content stays contained
+   to the 1500px .container inside. */
+.section-block { padding-block: 72px; }
 
-.section-block + .section-block {
-  border-top: 1px solid var(--black);
-  padding-top: 64px;
+.section-block--white { background: var(--white); color: var(--ink); }
+.section-block--feature {
+  background-image: radial-gradient(176.78% 100% at 53.62% 0%, #77f6ff 0%, #4cb6ff 54%, #0592ff 100%);
+  color: var(--black);
 }
+.section-block--dark { background: var(--black); color: var(--white); }
 
 .section-content { display: flex; flex-direction: column; gap: 20px; max-width: 900px; }
 .section-content h2,
 .section-block__heading { font-size: clamp(36px, 4.8vw, 64px); font-weight: 700; line-height: 1.1; }
 .section-block__heading { margin-bottom: 24px; }
 .section-content h3 { font-size: clamp(20px, 2.2vw, 32px); font-weight: 700; }
-.section-content p { font-size: 17px; line-height: 1.65; color: #2b2b31; }
+.section-content p { font-size: 17px; line-height: 1.65; color: #000; }
+
+.section-block--dark .section-content p { color: rgba(255, 255, 255, 0.85); }
 
 .subsection { display: flex; flex-direction: column; gap: 10px; }
 
@@ -406,7 +413,7 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
   padding-left: 24px;
   font-size: 17px;
   line-height: 1.6;
-  color: #2b2b31;
+  color: #000;
 }
 .dash-list li::before {
   content: "\2014";
@@ -414,7 +421,6 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
   left: 0;
   color: var(--black);
 }
-#outcome .dash-list li::before { color: var(--future-blue); }
 .dash-list a {
   position: relative;
   display: inline;
@@ -428,11 +434,21 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 }
 .dash-list a:hover { background-size: 100% 1px; }
 
-.outcome-lead { font-size: 22px; font-weight: 500; line-height: 1.5; }
+.section-block--dark .dash-list li { color: rgba(255, 255, 255, 0.85); }
+.section-block--dark .dash-list li::before { color: var(--aqua); }
+.section-block--dark .dash-list a {
+  color: var(--white);
+  background-image: linear-gradient(var(--white), var(--white));
+}
+
+.section-content h3.outcome-lead { font-size: 22px; font-weight: 500; line-height: 1.5; }
+
+.section-content p.situation-lead { font-size: 19px; font-weight: 700; line-height: 1.6; }
 
 /* Approach section splits into the main text column and a black
    Key Contact card, inline with the section copy (mirrors the
-   hero's main/sidebar split). */
+   hero's main/sidebar split), set against the feature gradient
+   background. */
 .approach-grid {
   display: grid;
   grid-template-columns: 1fr 600px;
@@ -646,5 +662,5 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
   .footer-nav { grid-template-columns: repeat(2, 1fr); gap: 28px; }
   .footer-cta { grid-column: 1 / -1; }
   .footer-bottom-inner { grid-template-columns: 1fr; }
-  .section-block + .section-block { padding-top: 48px; }
+  .section-block { padding-block: 48px; }
 }
