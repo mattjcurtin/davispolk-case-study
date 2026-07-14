@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Davis Polk — Matter Story Template (Spec Annotations)</title>
+<style>
+  :root{
+    --ink:#0a0a0c;
+    --glow-blue:#2f2ff0;
+    --mint:#9ffaf0;
+    --mint-2:#c8fff8;
+    --sky-1:#7fe6ff;
+    --sky-2:#1f8cff;
+    --gray-bg:#eef0f2;
+    --line:#232329;
+    --text-dim:#a9adb4;
+    --white:#ffffff;
+    --grn:#1f8f5f;
+    --grn-bg:#e9f8f0;
+    --grn-line:#a9dfc4;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--gray-bg);color:var(--ink);}
+  h1,h2,h3,h4{margin:0;font-weight:800;letter-spacing:-0.01em;}
+  p{margin:0;}
+  a{color:inherit;}
+
+  /* ---------- Intro band ---------- */
+  .intro-band{
+    background:#f4faf7;border-bottom:3px solid var(--grn);
+    padding:40px 40px 34px;
+  }
+  .intro-eyebrow{
+    display:inline-flex;align-items:center;gap:8px;
+    background:var(--grn);color:#04150c;font-size:11px;font-weight:800;
+    letter-spacing:.08em;text-transform:uppercase;padding:6px 12px;border-radius:999px;
+    margin-bottom:18px;
+  }
+  .intro-title{
+    font-size:32px;color:var(--ink);margin-bottom:14px;max-width:760px;
+  }
+  .intro-desc{
+    font-size:15.5px;line-height:1.7;color:#3d4a44;max-width:720px;
+  }
+
+  /* ---------- Nav ---------- */
+  .nav{
+    background:var(--ink);color:var(--white);
+    display:flex;align-items:center;justify-content:space-between;
+    padding:16px 40px;font-size:14px;border-bottom:1px solid var(--line);
+  }
+  .nav .logo{font-weight:800;font-size:18px;letter-spacing:-0.02em;}
+  .nav ul{list-style:none;display:flex;gap:26px;margin:0;padding:0;color:#d8d9dc;}
+
+  /* ---------- Spec card component (the "what to add" table) ---------- */
+  .spec{
+    max-width:640px;margin:16px 0;border-radius:8px;overflow:hidden;
+    border:1px solid var(--grn-line);background:var(--grn-bg);
+  }
+  .spec-head{
+    background:var(--grn);color:#fff;font-size:11.5px;font-weight:800;
+    letter-spacing:.04em;padding:9px 14px;display:flex;align-items:center;gap:8px;
+  }
+  .spec-head .n{
+    background:rgba(255,255,255,0.25);width:18px;height:18px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;font-size:10.5px;
+  }
+  .spec-body{padding:12px 14px;}
+  .spec-row{display:flex;gap:9px;align-items:flex-start;margin-bottom:8px;}
+  .spec-row:last-child{margin-bottom:0;}
+  .spec-row .check{color:var(--grn);font-weight:800;flex:none;font-size:13px;line-height:1.5;}
+  .spec-row p{font-size:12.5px;line-height:1.55;color:#173a28;}
+  .spec-row p b{color:#0c2317;}
+  /* variant for dark section backgrounds */
+  .spec--onDark{background:rgba(31,143,95,0.16);border-color:rgba(169,223,196,0.4);}
+  .spec--onDark .spec-row p{color:#d7f3e4;}
+  .spec--onDark .spec-row p b{color:#eafff3;}
+  .spec--onDark .spec-row .check{color:#5fe0a8;}
+
+  /* ---------- Hero ---------- */
+  .t-hero{
+    background:radial-gradient(ellipse 900px 500px at 15% 0%, rgba(47,47,240,0.55), transparent 60%), var(--ink);
+    color:var(--white);padding:44px 40px 56px;
+  }
+  .t-crumb{font-size:12px;color:#9a9da3;margin-bottom:26px;}
+  .t-crumb b{color:var(--white);}
+  .t-hero-grid{display:grid;grid-template-columns:1.6fr 1fr;gap:50px;}
+  .t-hero h1{font-size:38px;line-height:1.15;margin-bottom:16px;}
+  .t-hero-summary{color:#c7c9cd;font-size:15px;line-height:1.8;max-width:600px;}
+  .glance{border-left:2px solid var(--sky-1);padding-left:22px;}
+  .glance h3{font-size:15px;margin-bottom:14px;}
+  .glance-group{margin-bottom:16px;}
+  .glance-label{font-size:10.5px;letter-spacing:.1em;color:#82858c;text-transform:uppercase;margin-bottom:6px;}
+  .glance-val{font-size:14px;color:var(--sky-1);font-weight:600;}
+
+  .subnav{
+    background:var(--white);border-bottom:1px solid #d9dce0;padding:16px 40px;
+    display:flex;gap:34px;font-size:13.5px;font-weight:600;color:#5a5d63;
+  }
+  .subnav .on{color:var(--ink);border-bottom:2px solid var(--glow-blue);padding-bottom:14px;margin-bottom:-16px;}
+
+  /* ---------- Stats ---------- */
+  .stats-band{background:var(--mint);padding:44px 40px 34px;}
+  .stats-band h2{font-size:28px;margin-bottom:18px;}
+  .stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:8px;}
+  .stat-card{background:var(--mint-2);border:1px solid rgba(0,0,0,0.08);border-radius:6px;padding:24px;}
+  .stat-card .big{font-size:36px;font-weight:800;margin-bottom:8px;}
+  .stat-card p{font-size:13.5px;color:#1c2b2a;line-height:1.5;}
+
+  /* ---------- Situation ---------- */
+  .situation{background:var(--white);padding:48px 40px;}
+  .situation h2{font-size:26px;margin-bottom:18px;}
+  .situation p{max-width:700px;font-size:14.5px;line-height:1.8;color:#26282c;margin-bottom:14px;}
+  .situation p.lead{font-weight:700;}
+
+  /* ---------- Approach ---------- */
+  .approach{background:linear-gradient(160deg, var(--sky-1), var(--sky-2));color:var(--ink);padding:48px 40px;}
+  .approach-grid{display:grid;grid-template-columns:1.6fr 1fr;gap:44px;}
+  .approach h2{font-size:26px;margin-bottom:18px;color:var(--white);}
+  .approach h4{font-size:16px;margin-bottom:8px;}
+  .approach-block{margin-bottom:20px;}
+  .approach-block p{font-size:14px;line-height:1.7;color:#0d2733;max-width:560px;}
+  .contact-card{background:var(--ink);color:var(--white);border-radius:8px;padding:24px;height:fit-content;}
+  .contact-card h4{font-size:14px;color:#9a9da3;margin-bottom:14px;font-weight:700;}
+  .contact-row{display:flex;gap:14px;align-items:center;margin-bottom:16px;}
+  .avatar{width:52px;height:52px;border-radius:6px;background:#3a3d44;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:#c7c9cd;}
+  .contact-name{font-size:15px;font-weight:700;}
+  .contact-role{font-size:12.5px;color:#9a9da3;}
+  .contact-card hr{border:none;border-top:1px solid #2a2a30;margin:16px 0;}
+  .contact-card a{font-size:12.5px;color:var(--sky-1);display:block;margin-bottom:6px;font-weight:600;}
+
+  /* ---------- Outcome ---------- */
+  .outcome{background:var(--ink);color:var(--white);padding:48px 40px;}
+  .outcome h2{font-size:26px;margin-bottom:16px;}
+  .outcome p.lead{max-width:700px;font-size:15px;line-height:1.8;color:#e4e5e8;margin-bottom:20px;}
+  .outcome ul{list-style:none;margin:0 0 6px;padding:0;max-width:700px;}
+  .outcome li{font-size:13.5px;color:#b9bcc2;padding-left:18px;position:relative;margin-bottom:10px;line-height:1.6;}
+  .outcome li:before{content:"—";position:absolute;left:0;color:var(--sky-1);}
+
+  /* ---------- Related ---------- */
+  .related{background:var(--gray-bg);padding:48px 40px;}
+  .related h2{font-size:26px;margin-bottom:20px;}
+  .related-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:8px;}
+  .related-card{background:var(--white);border:1px solid #d9dce0;border-radius:6px;padding:22px;}
+  .related-card h4{font-size:16px;margin-bottom:14px;}
+  .related-card ul{list-style:none;margin:0;padding:0;}
+  .related-card li{font-size:13.5px;color:#3a3d44;margin-bottom:10px;line-height:1.5;}
+
+  @media (max-width:900px){
+    .t-hero-grid, .approach-grid{grid-template-columns:1fr;}
+    .stats-grid, .related-grid{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+  <div class="intro-band">
+    <h1 class="intro-title">Matter Case Study Template</h1>
+    <p class="intro-desc">Deloitte and BCG share the same clients with the same confidentiality restrictions, but publish anonymized client stories that AI engines cite regularly. This page shows what the same approach looks like as a Davis Polk matter story. Green spec cards mark what each section must include — they won't ship on the live page.</p>
+  </div>
+
+  <nav class="nav">
+    <div class="logo">Davis Polk</div>
+    <ul><li>Lawyers</li><li>Capabilities</li><li>Insights</li><li>Offices</li><li>About Us</li></ul>
+  </nav>
+
+  <div class="t-hero">
+    <div class="t-crumb"><b>Matters</b> &nbsp;›&nbsp; Pharmaceutical &amp; Life Sciences &nbsp;›&nbsp; Hostile Defense</div>
+    <div class="t-hero-grid">
+      <div>
+        <h1>Cross-Border Hostile Acquisition Defense in the Pharmaceutical Sector</h1>
+
+        <div class="spec spec--onDark">
+          <div class="spec-head"><span class="n">1</span> ELEMENT 1 — THE MATTER HEADLINE — ADD:</div>
+          <div class="spec-body">
+            <div class="spec-row"><span class="check">✓</span><p><b>Deal Type</b> + <b>Sector</b> + <b>Key Challenge/Distinction</b>, in that order</p></div>
+            <div class="spec-row"><span class="check">✓</span><p>12 words or fewer</p></div>
+            <div class="spec-row"><span class="check">✓</span><p>Must answer a question a GC would actually type into an AI engine</p></div>
+          </div>
+        </div>
+
+        <p class="t-hero-summary">Hostile takeover defense for a publicly traded pharmaceutical company facing an unsolicited all-cash offer from a larger European acquirer seeking immediate board representation and control. The defense required simultaneous engagement with SEC tender offer rules, Delaware corporate law, and a proxy contest timeline compressed to 23 days. The matter established a new precedent for the use of shareholder rights plans in combination with a market check process under accelerated timelines.</p>
+
+        <div class="spec spec--onDark">
+          <div class="spec-head"><span class="n">2</span> ELEMENT 3 — THE MATTER SUMMARY ("FIRST 30%") — ADD:</div>
+          <div class="spec-body">
+            <div class="spec-row"><span class="check">✓</span><p>100–150 words, three sentences max</p></div>
+            <div class="spec-row"><span class="check">✓</span><p>Structure: <b>Situation → Complexity → Significance</b></p></div>
+            <div class="spec-row"><span class="check">✓</span><p>Opens with deal type and sector — never "Davis Polk represented..."</p></div>
+          </div>
+        </div>
+      </div>
+      <div class="glance">
+        <h3>At a glance</h3>
+        <div class="glance-group"><div class="glance-label">Deal Type</div><div class="glance-val">Hostile Defense →</div></div>
+        <div class="glance-group"><div class="glance-label">Industry Sector</div><div class="glance-val">Pharmaceutical &amp; Life Sciences →</div></div>
+        <div class="glance-group"><div class="glance-label">Jurisdiction/Regulatory Body</div><div class="glance-val">SEC / Delaware →</div></div>
+        <div class="glance-group"><div class="glance-label">Deal Complexity Signal</div><div class="glance-val">Contested →</div></div>
+        <div class="glance-group" style="margin-bottom:0;"><div class="glance-val">Cross-Border →</div></div>
+
+        <div class="spec spec--onDark" style="max-width:none;margin-top:20px;">
+          <div class="spec-head"><span class="n">3</span> ELEMENT 2 — MATTER TYPE TAGS — ADD:</div>
+          <div class="spec-body">
+            <div class="spec-row"><span class="check">✓</span><p>3–5 tags spanning Deal Type, Industry Sector, Jurisdiction/Regulator, and Complexity Signal</p></div>
+            <div class="spec-row"><span class="check">✓</span><p>Every tag linked to its practice or industry hub page — not a plain label</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="subnav">
+    <span class="on">The situation</span><span>Our approach</span><span>The outcome</span><span>Related resources</span>
+  </div>
+
+  <div class="stats-band">
+    <h2>Key statistics</h2>
+    <div class="stats-grid">
+      <div class="stat-card"><div class="big">31</div><p>days from engagement to signed transaction</p></div>
+      <div class="stat-card"><div class="big">20%+</div><p>premium to the original unsolicited offer</p></div>
+      <div class="stat-card"><div class="big">3</div><p>jurisdictions coordinated — Delaware, SEC, EU</p></div>
+    </div>
+    <div class="spec">
+      <div class="spec-head"><span class="n">4</span> ELEMENT 6 (SURFACED EARLY) — THE OUTCOME — ADD:</div>
+      <div class="spec-body">
+        <div class="spec-row"><span class="check">✓</span><p>At least one specific, quantified fact stated as standalone data — not buried in a paragraph</p></div>
+        <div class="spec-row"><span class="check">✓</span><p>If no hard number exists, use a comparative claim ("faster than typical," "fewer conditions than average")</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="situation">
+    <h2>The situation</h2>
+    <p class="lead">A large-cap, Nasdaq-listed pharmaceutical company received an unsolicited public offer from a European strategic acquirer seeking a controlling stake, arriving simultaneously with a nomination notice for board seats.</p>
+    <p>Davis Polk was retained within 48 hours of the public announcement. The initial challenge was assessing the credibility of the acquirer's financing commitment, the regulatory approval timeline in both the US and EU, and the likelihood of the proxy contest succeeding given the existing activist ownership profile.</p>
+    <div class="spec">
+      <div class="spec-head"><span class="n">5</span> ELEMENT 4 — THE SITUATION — ADD:</div>
+      <div class="spec-body">
+        <div class="spec-row"><span class="check">✓</span><p>150–250 words, two to three paragraphs</p></div>
+        <div class="spec-row"><span class="check">✓</span><p>Client identified only by sector, size range, and general description (e.g., "a Nasdaq-listed pharmaceutical company with annual revenue exceeding $4 billion")</p></div>
+        <div class="spec-row"><span class="check">✓</span><p>Named regulatory counterparties are fine — regulators are public entities</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="approach">
+    <div class="approach-grid">
+      <div>
+        <h2>The Davis Polk approach</h2>
+        <div class="approach-block">
+          <h4>Regulatory strategy</h4>
+          <p>Davis Polk coordinated with the SEC's Division of Corporation Finance to confirm the applicable tender offer timeline under Rule 14d-9 and assess whether the acquirer's simultaneous proxy solicitation violated the all-holders rule.</p>
+        </div>
+        <div class="approach-block">
+          <h4>Transaction structuring / defense architecture</h4>
+          <p>Davis Polk structured a shareholder rights plan with a 15% threshold calibrated to the activist ownership profile, paired with a market check process coordinated with three qualified strategic acquirers.</p>
+        </div>
+        <div class="approach-block">
+          <h4>Multi-jurisdictional coordination</h4>
+          <p>EU Merger Regulation Phase I review was projected at 25 working days — creating a structural timeline advantage. Davis Polk coordinated with European counsel to formally trigger the EU review process.</p>
+        </div>
+        <div class="spec spec--onDark">
+          <div class="spec-head"><span class="n">6</span> ELEMENT 5 — THE DAVIS POLK APPROACH — ADD:</div>
+          <div class="spec-body">
+            <div class="spec-row"><span class="check">✓</span><p>200–350 words, split into named sub-sections (Regulatory Strategy · Structuring · Coordination, etc.)</p></div>
+            <div class="spec-row"><span class="check">✓</span><p>If partner consents: "Led by [Partner Name], [Title], with support from [name/title]" — the attorney→matter→practice link AI engines need</p></div>
+          </div>
+        </div>
+      </div>
+      <div class="contact-card">
+        <h4>Key contact</h4>
+        <div class="contact-row">
+          <div class="avatar">JM</div>
+          <div>
+            <div class="contact-name">John B. Meade</div>
+            <div class="contact-role">Practice Co-Head, Partner</div>
+            <div class="contact-role">Capital Markets · New York</div>
+          </div>
+        </div>
+        <hr>
+        <div style="font-size:12.5px;color:#9a9da3;line-height:1.6;margin-bottom:12px;">With support from the Davis Polk Capital Markets and Regulatory teams.</div>
+        <a href="#">View Capital Markets team →</a>
+        <a href="#">View Regulatory team →</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="outcome">
+    <h2>The outcome</h2>
+    <p class="lead">The matter concluded 31 days from initial engagement with a negotiated transaction at a 22% premium to the original offer — achieved without any board seat concessions and without a shareholder vote.</p>
+    <ul>
+      <li>EU Merger Regulation Phase I review completed without conditions</li>
+      <li>All three activist funds tendered their shares at the negotiated price</li>
+      <li>The 31-day resolution timeline has been cited in academic commentary on hostile defense strategy as a model for rights plan deployment combined with an accelerated market check</li>
+    </ul>
+    <div class="spec spec--onDark">
+      <div class="spec-head"><span class="n">7</span> ELEMENT 6 — THE OUTCOME (FULL) — ADD:</div>
+      <div class="spec-body">
+        <div class="spec-row"><span class="check">✓</span><p>100–150 words</p></div>
+        <div class="spec-row"><span class="check">✓</span><p>At least one specific, quantified fact — a closing timeline, approval duration, recovery percentage, or premium</p></div>
+        <div class="spec-row"><span class="check">✓</span><p>A durability signal where available — a citation, precedent, or model-for-future-deals claim</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="related">
+    <h2>Related resources</h2>
+    <div class="related-grid">
+      <div class="related-card">
+        <h4>Practice areas</h4>
+        <ul><li>M&amp;A Practice</li><li>Capital Markets Practice</li><li>Securities Regulation &amp; Enforcement</li></ul>
+      </div>
+      <div class="related-card">
+        <h4>Industries</h4>
+        <ul><li>Pharmaceutical &amp; Life Sciences</li></ul>
+      </div>
+      <div class="related-card">
+        <h4>Insights</h4>
+        <ul><li>Client Alert: Delaware Court Confirms Shareholder Rights Plan Parameters</li><li>M&amp;A Market Monitor: Hostile Activity Trends Q1 2026</li></ul>
+      </div>
+    </div>
+    <div class="spec">
+      <div class="spec-head"><span class="n">8</span> ELEMENT 7 — RELATED RESOURCES — ADD:</div>
+      <div class="spec-body">
+        <div class="spec-row"><span class="check">✓</span><p>3–5 cross-links minimum, spanning Practice Areas, Industries, and related Insights</p></div>
+        <div class="spec-row"><span class="check">✓</span><p>Every link should be a real, live destination page — not a placeholder</p></div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
