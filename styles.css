@@ -230,6 +230,16 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
   max-width: 100%;
   margin: 0 0 28px;
 }
+.headline-meta {
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0 0 20px;
+}
+.headline-meta__divider {
+  display: inline-block;
+  margin: 0 10px;
+}
 
 /* Hero splits into a main narrative column and an At a glance
    sidebar; sidebar collapses below the main column on narrow
