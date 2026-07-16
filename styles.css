@@ -530,95 +530,6 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 
 .section-content p.situation-lead { font-size: 19px; font-weight: 700; line-height: 1.6; }
 
-/* Approach section splits into the main text column and a black
-   Key Contact card, inline with the section copy (mirrors the
-   hero's main/sidebar split), set against the feature gradient
-   background. */
-.approach-grid {
-  display: grid;
-  grid-template-columns: 1fr 600px;
-  gap: 64px;
-  align-items: start;
-}
-
-.contact-card {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  background: var(--black);
-  color: var(--white);
-  padding: 32px;
-}
-.contact-card__heading { font-size: clamp(20px, 2.2vw, 32px); font-weight: 700; }
-.contact-card__profile { display: flex; align-items: center; gap: 20px; }
-.contact-card__photo {
-  width: 180px;
-  height: 180px;
-  aspect-ratio: 1 / 1;
-  object-fit: cover;
-  border: 1px solid var(--white);
-  display: block;
-  flex-shrink: 0;
-}
-.contact-card__person { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 12px; }
-.contact-card__name {
-  position: relative;
-  display: inline-block;
-  width: fit-content;
-  font-size: 24px;
-  font-weight: 700;
-  color: var(--white);
-  text-decoration: none;
-}
-.contact-card__name::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -2px;
-  height: 1px;
-  background: var(--white);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.2s ease;
-}
-.contact-card__name:hover::after { transform: scaleX(1); }
-.contact-card__titles,
-.contact-card__meta-group { display: flex; flex-direction: column; gap: 2px; }
-.contact-card__title { font-size: 15px; font-weight: 700; color: var(--white); }
-.contact-card__meta { font-size: 14px; color: rgba(255, 255, 255, 0.85); }
-.contact-card__divider { border: 0; border-top: 1px solid var(--white); margin: 0; }
-.contact-card__support { font-size: 15px; line-height: 1.6; color: rgba(255, 255, 255, 0.88); }
-.contact-card__links { display: flex; flex-direction: column; gap: 12px; }
-.contact-card__link {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  width: fit-content;
-  font-size: 15px;
-  color: var(--white);
-  text-decoration: none;
-}
-.contact-card__link::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -2px;
-  height: 1px;
-  background: var(--white);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.2s ease;
-}
-.contact-card__link:hover::after { transform: scaleX(1); }
-.contact-card__arrow { width: 13px; height: 12px; flex-shrink: 0; }
-
-@media (max-width: 900px) {
-  .approach-grid { grid-template-columns: 1fr; gap: 32px; }
-}
-
 /* ---------- Related resources ----------
    Full-bleed band: background spans the viewport edge-to-edge,
    content stays contained to the 1500px .container. */
@@ -760,9 +671,6 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
     border-top: none;
     padding-top: 0;
   }
-
-  .contact-card__profile { flex-direction: column; align-items: flex-start; }
-  .contact-card__person { align-items: flex-start; text-align: left; }
 
   .stat-strip__heading { margin-bottom: 16px; }
   .section-block__heading { margin-bottom: 12px; }
