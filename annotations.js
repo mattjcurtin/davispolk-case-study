@@ -101,6 +101,7 @@
     index: 0,
     markers: [],
     highlight: null,
+    dim: null,
     panel: null,
     toggle: null,
     ticking: false
@@ -127,6 +128,12 @@
     ring.className = "annot-highlight";
     document.body.appendChild(ring);
     state.highlight = ring;
+
+    var dim = document.createElement("div");
+    dim.className = "annot-dim";
+    dim.setAttribute("aria-hidden", "true");
+    document.body.appendChild(dim);
+    state.dim = dim;
 
     STEPS.forEach(function (step) {
       if (!step.selector) {
@@ -156,12 +163,11 @@
     panel.setAttribute("aria-label", "Annotations tour");
     panel.innerHTML =
       '<div class="annot-panel__head">' +
-        '<span class="n" data-role="badge"></span>' +
-        '<span class="label" data-role="eyebrow"></span>' +
-        '<span class="annot-panel__close" data-role="close" role="button" tabindex="0" aria-label="Close annotations">×</span>' +
+        '<span class="annot-panel__head-label">Annotations Tour</span>' +
+        '<button type="button" class="annot-panel__close" data-role="close" aria-label="Close annotations">×</button>' +
       "</div>" +
       '<div class="annot-panel__body">' +
-        '<div class="annot-panel__title" data-role="title"></div>' +
+        '<p class="annot-panel__title"><span data-role="title"></span><span class="annot-panel__count" data-role="step"></span></p>' +
         '<p class="annot-panel__text" data-role="text"></p>' +
         '<ul class="annot-panel__list" data-role="list"></ul>' +
       "</div>" +
@@ -170,7 +176,6 @@
           '<svg class="annot-panel__restart-icon" viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true"><path d="M17.65 6.35A7.958 7.958 0 0 0 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>' +
           "Restart" +
         "</button>" +
-        '<span class="annot-panel__step" data-role="step"></span>' +
         '<div class="annot-panel__nav">' +
           '<button type="button" class="annot-panel__btn" data-role="prev">Back</button>' +
           '<button type="button" class="annot-panel__btn annot-panel__btn--primary" data-role="next">Next</button>' +
@@ -206,6 +211,10 @@
       state.highlight.remove();
       state.highlight = null;
     }
+    if (state.dim) {
+      state.dim.remove();
+      state.dim = null;
+    }
     if (state.panel) {
       state.panel.remove();
       state.panel = null;
@@ -214,25 +223,24 @@
 
   function renderPanel(step, i) {
     var panel = state.panel;
-    var badgeEl = panel.querySelector('[data-role="badge"]');
-    if (step.id === "intro") {
-      badgeEl.style.display = "none";
-    } else {
-      badgeEl.style.display = "";
-      badgeEl.textContent = String(step.id);
-    }
-    panel.querySelector('[data-role="eyebrow"]').textContent = step.eyebrow;
-
     var titleEl = panel.querySelector('[data-role="title"]');
     var textEl = panel.querySelector('[data-role="text"]');
     var listEl = panel.querySelector('[data-role="list"]');
 
-    if (step.title) {
-      titleEl.style.display = "";
-      titleEl.textContent = step.title;
+    titleEl.textContent = step.title || step.eyebrow;
+
+    // Counter numbers only the highlighted elements — the intro has no
+    // target, so it shows no counter rather than shifting every number.
+    var stepEl = panel.querySelector('[data-role="step"]');
+    if (step.selector) {
+      var totalTargets = STEPS.filter(function (s) {
+        return s.selector;
+      }).length;
+      stepEl.style.display = "";
+      stepEl.textContent = step.id + " / " + totalTargets;
     } else {
-      titleEl.style.display = "none";
-      titleEl.textContent = "";
+      stepEl.style.display = "none";
+      stepEl.textContent = "";
     }
 
     if (step.body) {
@@ -255,10 +263,11 @@
       listEl.style.display = "none";
     }
 
-    panel.querySelector('[data-role="step"]').textContent = (i + 1) + " / " + STEPS.length;
-    panel.querySelector('[data-role="prev"]').disabled = i === 0;
-    panel.querySelector('[data-role="restart"]').disabled = i === 0;
-    panel.querySelector('[data-role="next"]').textContent = i === STEPS.length - 1 ? "Done" : "Next";
+    // Back hides (rather than disables) on the first step, matching the
+    // reference tour; Restart stays available throughout.
+    panel.querySelector('[data-role="prev"]').classList.toggle("annot-panel__btn--hidden", i === 0);
+    panel.querySelector('[data-role="next"]').textContent =
+      i === STEPS.length - 1 ? "Finish" : "Next →";
   }
 
   function positionAll() {
@@ -274,14 +283,21 @@
       var target = document.querySelector(step.selector);
       if (target) {
         var r = target.getBoundingClientRect();
-        state.highlight.style.top = r.top + window.scrollY - 8 + "px";
-        state.highlight.style.left = r.left + window.scrollX - 8 + "px";
-        state.highlight.style.width = r.width + 16 + "px";
-        state.highlight.style.height = r.height + 16 + "px";
+        // 2px pad keeps the mint ring flush against the element, matching
+        // the reference tour's spotlight geometry.
+        state.highlight.style.top = r.top + window.scrollY - 2 + "px";
+        state.highlight.style.left = r.left + window.scrollX - 2 + "px";
+        state.highlight.style.width = r.width + 4 + "px";
+        state.highlight.style.height = r.height + 4 + "px";
         state.highlight.classList.add("is-visible");
+        state.dim.classList.remove("is-visible");
       }
     } else {
+      // No target to spotlight — dim the whole page instead so the
+      // tour card still reads as the focus (mirrors the reference
+      // tour's full-screen dim on its intro step).
       state.highlight.classList.remove("is-visible");
+      state.dim.classList.add("is-visible");
     }
   }
 

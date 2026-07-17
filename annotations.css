@@ -5,15 +5,26 @@
    this file is scoped under .annot- classes and is created/
    removed by annotations.js — it never touches the production
    styles in styles.css or the real page content.
+
+   Visual language migrated from the davis-polk-knowledge-navigator
+   product tour (ProductTour.tsx + tailwind.config.ts): hard-edged
+   geometry (zero border-radius), mint spotlight ring + square
+   numbered badges, white card with black border and Future Blue
+   primary action. Colors are 2022 DPW brand tokens.
    ============================================================ */
 
 :root {
-  --annot-green: #02cea3;
-  --annot-green-line: #81e7d1;
-  --annot-green-bg: #d9f8f1;
-  --annot-hunter: #01564e;
-  --annot-ink: #0c2317;
-  --annot-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --annot-mint: #02cea3;        /* Mint — badge fill + spotlight ring */
+  --annot-blue: #140be3;        /* Future Blue — primary action */
+  --annot-blue-bright: #0f37ff; /* web-palette accent blue — hover */
+  --annot-hunter: #01564e;      /* Hunter — checkmarks */
+  --annot-gray-50: #f7f9fc;
+  --annot-gray-200: #d6d5db;
+  --annot-gray-300: #c5cee0;
+  --annot-gray-400: #8f9bb3;
+  --annot-gray-700: #636267;
+  --annot-font: var(--font-sans, "Helvetica Neue", Helvetica, Arial, sans-serif);
+  --annot-shadow-overlay: 0 -8px 24px rgba(34, 43, 69, 0.14);
 }
 
 .annot-toggle {
@@ -25,9 +36,9 @@
   align-items: center;
   gap: 8px;
   padding: 12px 18px;
-  border-radius: 999px;
-  border: 1px solid var(--annot-green);
-  background: #0a0a0c;
+  border-radius: 0;
+  border: 1px solid var(--annot-mint);
+  background: #000;
   color: #fff;
   font-family: var(--annot-font);
   font-size: 13px;
@@ -36,20 +47,21 @@
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
   cursor: pointer;
 }
-.annot-toggle:hover { border-color: var(--annot-green-line); }
+.annot-toggle:hover { border-color: #75fbfd; }
 .annot-toggle__dot {
   width: 8px;
   height: 8px;
-  border-radius: 50%;
   background: #6b6f76;
   flex-shrink: 0;
   transition: background 0.15s ease, box-shadow 0.15s ease;
 }
 .annot-toggle[aria-pressed="true"] .annot-toggle__dot {
-  background: var(--annot-green);
-  box-shadow: 0 0 0 3px rgba(31, 143, 95, 0.25);
+  background: var(--annot-mint);
+  box-shadow: 0 0 0 3px rgba(2, 206, 163, 0.25);
 }
 
+/* Square numbered badge — mint fill, 2px black border, no pulse:
+   the dimmed surroundings carry the emphasis, the badge just labels. */
 .annot-marker {
   position: absolute;
   top: 0;
@@ -57,129 +69,148 @@
   z-index: 9998;
   width: 28px;
   height: 28px;
-  border-radius: 50%;
-  border: none;
-  background: var(--annot-green);
-  color: var(--annot-ink);
+  border-radius: 0;
+  border: 2px solid #000;
+  background: var(--annot-mint);
+  color: #000;
   font-family: var(--annot-font);
-  font-size: 12.5px;
+  font-size: 14px;
   font-weight: 800;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35), 0 0 0 3px rgba(255, 255, 255, 0.9);
   transform: translate(-50%, -50%);
-  transition: transform 0.15s ease, background 0.15s ease, color 0.15s ease;
-  animation: annot-pulse 2.2s ease-out infinite;
+  transition: transform 0.15s ease, background 0.15s ease, color 0.15s ease,
+    border-color 0.15s ease;
 }
-.annot-marker:hover { transform: translate(-50%, -50%) scale(1.12); }
+.annot-marker:hover { transform: translate(-50%, -50%) scale(1.1); }
 .annot-marker.is-active {
-  background: var(--annot-ink);
-  color: #fff;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35), 0 0 0 3px var(--annot-green-line);
-  animation: none;
+  background: #000;
+  color: var(--annot-mint);
+  border-color: var(--annot-mint);
 }
 
-@keyframes annot-pulse {
-  0% { box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35), 0 0 0 3px rgba(255, 255, 255, 0.9), 0 0 0 0 rgba(2, 206, 163, 0.55); }
-  70% { box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35), 0 0 0 3px rgba(255, 255, 255, 0.9), 0 0 0 11px rgba(2, 206, 163, 0); }
-  100% { box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35), 0 0 0 3px rgba(255, 255, 255, 0.9), 0 0 0 0 rgba(2, 206, 163, 0); }
-}
-@media (prefers-reduced-motion: reduce) {
-  .annot-marker { animation: none; }
-}
-
+/* Spotlight — flush 2px mint ring around the target, everything
+   outside dimmed to black/50 via the oversized box-shadow. */
 .annot-highlight {
   position: absolute;
   top: 0;
   left: 0;
   z-index: 9997;
   pointer-events: none;
-  border: 2px solid var(--annot-green);
-  border-radius: 6px;
-  box-shadow: 0 0 0 4px rgba(31, 143, 95, 0.18), 0 0 0 9999px rgba(10, 10, 12, 0.35);
+  border: 2px solid var(--annot-mint);
+  border-radius: 0;
+  box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.5);
   opacity: 0;
   transition: top 0.2s ease, left 0.2s ease, width 0.2s ease, height 0.2s ease, opacity 0.2s ease;
 }
 .annot-highlight.is-visible { opacity: 1; }
 
+/* Full-screen dim for steps with no highlighted target (the intro) —
+   there's nothing to cut a spotlight around, but the backdrop still
+   dims so the tour card reads as the focus. */
+.annot-dim {
+  position: fixed;
+  inset: 0;
+  z-index: 9997;
+  pointer-events: none;
+  background: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+.annot-dim.is-visible { opacity: 1; }
+
 .annot-panel {
   position: fixed;
-  left: 24px;
-  bottom: 84px;
+  right: 24px;
+  bottom: 24px;
   z-index: 9999;
-  width: 420px;
+  width: 384px;
   max-width: calc(100vw - 48px);
   max-height: 60vh;
   display: flex;
   flex-direction: column;
   background: #fff;
-  border: 1px solid var(--annot-green-line);
-  border-radius: 10px;
+  border: 1px solid #000;
+  border-radius: 0;
   overflow: hidden;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+  box-shadow: var(--annot-shadow-overlay);
   font-family: var(--annot-font);
+  animation: annot-fade-up 0.35s ease both;
 }
+@keyframes annot-fade-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .annot-panel { animation: none; }
+}
+
 .annot-panel__head {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 10px;
-  background: var(--annot-green);
-  color: var(--annot-ink);
-  padding: 10px 14px;
-  font-size: 12.5px;
-  font-weight: 800;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-.annot-panel__head .n {
+  border-bottom: 1px solid var(--annot-gray-200);
+  padding: 10px 16px;
   flex-shrink: 0;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: rgba(12, 35, 23, 0.14);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 11px;
 }
-.annot-panel__head .label { flex: 1; line-height: 1.4; }
+.annot-panel__head-label {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #000;
+}
 .annot-panel__close {
   flex-shrink: 0;
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  border: none;
+  background: none;
+  padding: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--annot-ink);
-  font-size: 15px;
+  color: var(--annot-gray-400);
+  font-size: 18px;
   line-height: 1;
   cursor: pointer;
+  transition: color 0.15s ease;
 }
-.annot-panel__close:hover { background: rgba(12, 35, 23, 0.14); }
+.annot-panel__close:hover { color: #000; }
 
 .annot-panel__body {
   padding: 16px;
   overflow-y: auto;
-  color: var(--annot-ink);
+  color: #000;
 }
 .annot-panel__title {
-  font-size: 19px;
-  font-weight: 800;
-  margin-bottom: 8px;
-  color: #0a0a0c;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px;
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.375;
+  color: #000;
+}
+.annot-panel__count {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--annot-gray-400);
 }
 .annot-panel__text {
-  font-size: 15px;
-  line-height: 1.6;
-  color: #3d4a44;
-  margin: 0;
+  margin: 8px 0 0;
+  font-size: 14px;
+  line-height: 1.625;
+  color: #000;
 }
 .annot-panel__list {
   list-style: none;
-  margin: 0;
+  margin: 10px 0 0;
   padding: 0;
   display: flex;
   flex-direction: column;
@@ -191,7 +222,7 @@
   align-items: flex-start;
   font-size: 14px;
   line-height: 1.55;
-  color: #173a28;
+  color: #000;
 }
 .annot-panel__list li::before {
   content: "\2713";
@@ -205,29 +236,29 @@
   align-items: center;
   justify-content: space-between;
   gap: 8px;
-  padding: 10px 14px;
-  border-top: 1px solid var(--annot-green-bg);
-  background: #fafcfb;
+  padding: 12px 16px;
+  border-top: 1px solid var(--annot-gray-200);
   flex-shrink: 0;
 }
-.annot-panel__step {
-  font-size: 12.5px;
-  font-weight: 700;
-  color: #5a6a63;
-}
-.annot-panel__nav { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+.annot-panel__nav { display: flex; gap: 8px; flex-shrink: 0; }
 .annot-panel__btn {
-  border: 1px solid var(--annot-green-line);
+  border: 1px solid var(--annot-gray-200);
   background: #fff;
-  color: var(--annot-ink);
-  font-size: 13px;
-  font-weight: 700;
-  padding: 6px 12px;
-  border-radius: 6px;
+  color: var(--annot-gray-700);
+  font-family: var(--annot-font);
+  font-size: 14px;
+  font-weight: 600;
+  padding: 6px 10px;
+  border-radius: 0;
   cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
 }
-.annot-panel__btn:hover { background: var(--annot-green-bg); }
-.annot-panel__btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.annot-panel__btn:hover {
+  border-color: var(--annot-gray-300);
+  background: var(--annot-gray-50);
+  color: #000;
+}
+.annot-panel__btn--hidden { visibility: hidden; }
 .annot-panel__btn--restart {
   display: inline-flex;
   align-items: center;
@@ -235,11 +266,17 @@
 }
 .annot-panel__restart-icon { flex-shrink: 0; }
 .annot-panel__btn--primary {
-  background: var(--annot-ink);
-  border-color: var(--annot-ink);
+  border-color: var(--annot-blue);
+  background: var(--annot-blue);
+  color: #fff;
+  font-weight: 700;
+  padding: 6px 12px;
+}
+.annot-panel__btn--primary:hover {
+  border-color: var(--annot-blue-bright);
+  background: var(--annot-blue-bright);
   color: #fff;
 }
-.annot-panel__btn--primary:hover { background: #1a1a1f; }
 
 @media (max-width: 640px) {
   .annot-panel {
