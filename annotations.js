@@ -14,7 +14,7 @@
       id: "intro",
       eyebrow: "Annotations Tour Introduction",
       title: "Matter Case Study Template",
-      body: "Deloitte and BCG share the same clients with the same confidentiality restrictions, but publish anonymized client stories that AI engines cite regularly. This page shows what the same approach looks like as a Davis Polk matter story. The numbered markers in this tour flag what each section still needs — they're a reference layer only and won't ship on the live page.",
+      body: "Deloitte and BCG share the same clients with the same confidentiality restrictions, but publish anonymized client stories that AI engines cite regularly. This page shows what the same approach looks like as a Davis Polk matter story. The numbered markers in this tour flag each page element, define parameters and identify why it is valuable.",
       items: [],
       selector: null
     },
